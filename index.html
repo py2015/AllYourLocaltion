@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<!--
+	Strata by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>All About You Location</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.poptrox.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/init.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="styles.css" />
+		
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body id="top">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="#" class="image avatar"><img src="images/avatar.jpg" alt="" /></a>
+				
+				
+				<h1 id="GeoResults"></h1>
+				
+				<br/>
+				
+				<button id="btnIpLocation" class="button active" onclick="getIpLocation();">IP Location</button>
+				<button id="btnRealLocation" class="button deactive" onclick="getRealLocation();">Real Location</button>
+			</header>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- One -->
+				<section id="one">
+					<header class="major">
+						<h2>Location Map</h2>
+					</header>
+					<form>
+					  <input id="geocomplete" type="text" placeholder="Type in an address" size="90" style="width: 99%;"/>
+					</form>
+					
+					<div class="map_canvas" id="mapcanvas"  style="width: 99%;"></div>
+					
+					<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+					<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+					<script src="../jquery.geocomplete.js"></script>
+					<script src="logger.js"></script>
+					 
+					<script>
+					  $(function(){
+						
+						var options = {
+						  map: ".map_canvas",
+						  location: [lat,lon]
+						};
+						
+						$("#geocomplete").geocomplete(options);
+						
+					  });
+					</script>
+				</section>
+				
+				<!--<section id="two">
+					<header class="major">
+						<h2>Weather</h2>
+					</header>
+					<div id="weather"></div>
+				</section>-->
+
+
+				
+
+			</div>
+
+		<!-- Footer -->
+
+	</body>
+	<script>
+		var ip = "";
+		var regionName = "";
+		var country = "";
+		var lat = "";
+		var lon = "";
+		var addr = "";
+		var isIpLocation = true;
+		
+		function showLocation(){
+			var body = "";
+			if(isIpLocation){
+				body = "I am in <strong>IP LOCATION</strong><br/><strong>" + ip + "</strong><br/>Address<br/><strong>" +  addr + "</strong><br/>";
+					//body += "<strong>" + regionName + ", " + country + "</strong><br/>";
+					body += "Latitude - Longtitude: <br/>" + "<strong>" + lat + " - " + lon + "</strong>";
+			}else{
+				body = "I am in <strong>REAL LOCATION</strong><br/><strong>" + ip + "</strong><br/>Address<br/><strong>" +  addr + "</strong><br/>";
+					//body += "<strong>" + regionName + ", " + country + "</strong><br/>";
+					body += "Latitude - Longtitude: <br/>" + "<strong>" + lat + " - " + lon + "</strong>";
+			}
+			$("#GeoResults").html(body);
+		}
+	
+		function getIpLocation(){
+			$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
+				ip = data["query"];
+				regionName = data["regionName"];
+				country = data["country"];
+				lat = data["lat"];
+				lon = data["lon"];
+				isIpLocation = true;
+			
+				getAddress();
+				showLocation();
+				drawMap();
+				
+				$("#btnIpLocation").removeClass("deactive");
+				$("#btnIpLocation").addClass("active");
+				
+				$("#btnRealLocation").addClass("deactive");
+				$("#btnRealLocation").removeClass("active");
+			});
+			
+		}
+		
+		function success(position) {
+		  
+		  //var body = "I am in <strong>IP LOCATION</strong><br/><strong>" + data["query"] + "</strong><br/>";
+		//		body += "<strong>" + data["regionName"] + ", " + data["country"] + "</strong><br/>";
+			//	body += "Latitude - Longtitude: <br/>" + "<strong>" + position.coords.latitude + " - " + position.coords.longitude + "</strong>";
+		  
+		  //$("#GeoResults").html(body);
+		  
+			lat = position.coords.latitude;
+			lon = position.coords.longitude;
+			isIpLocation = false;
+			
+			getAddress();
+			showLocation();
+			drawMap();
+			
+			$("#btnIpLocation").addClass("deactive");
+			$("#btnIpLocation").removeClass("active");
+			
+			$("#btnRealLocation").removeClass("deactive");
+			$("#btnRealLocation").addClass("active");
+		}
+
+		function error(msg) {
+		   alert(msg);
+		}
+		
+		function getRealLocation(){
+			if (navigator.geolocation) {
+			  navigator.geolocation.getCurrentPosition(success, error);
+			} else {
+			  error('not supported');
+			}
+		}
+		
+		function getAddress(){
+			var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&sensor=true";
+			$.getJSON(url, function(data) {
+				if(data.status == "OK"){
+					addr = data.results[0].formatted_address;
+				}
+			});
+		}
+		
+		function drawMap(){
+			$("#geocomplete").val(addr);
+			$("#geocomplete").trigger("geocode");
+		}
+		
+		$.ajaxSetup({
+			async: false
+		});
+		
+		getIpLocation();
+	</script>
+</html>
