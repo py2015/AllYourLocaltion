@@ -18,6 +18,7 @@
 		
 		<link rel="stylesheet" type="text/css" href="styles.css" />
 		<link rel="stylesheet" type="text/css" href="css/style-weather.css" />
+		<link rel="stylesheet" href="css/style-weather-widget.css" />
 		
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
@@ -32,7 +33,7 @@
 				<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js"></script>
 				<script src="js/jquery.simpleWeather.js"></script>
 
-				<div id="weather"></div>
+				<div id="weather" class="weather"></div>
 				
 				
 				<h1 id="GeoResults"></h1>
@@ -79,12 +80,97 @@
 				
 				<section id="two">
 					<header class="major">
-						<h2></h2>
+						<h2>Weather</h2>
 					</header>
-					<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js"></script>
-					<script src="js/jquery.simpleWeather.js"></script>
+					<div class="row">
+						
+						<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js"></script>
+						<script src="js/jquery.simpleWeather.js"></script>
+								
+						<article class="6u 12u$(xsmall) work-item">
+							<section class="section">
 
-					
+								<h1 id="h_wt2"></h1>
+
+								<div class="temperature">
+								  <h2 id="c_wt2"></h2>
+								</div>
+
+								<ul style="align=center;">
+								  <li class="fontawesome-plus left">
+									<span id="p_wt2">4 mph</span>
+								  </li>
+								  <li class="fontawesome-minus right">
+									<span id="m_wt2">10%</span>
+								  </li>
+								</ul> 
+
+							</section>
+						</article>
+						
+						<article class="6u 12u$(xsmall) work-item">
+							<section class="section">
+
+								<h1 id="h_wt3"></h1>
+
+								<div class="temperature">
+								  <h2 id="c_wt3"></h2>
+								</div>
+
+								<ul>
+								  <li class="fontawesome-plus left">
+									<span id="p_wt3">4 mph</span>
+								  </li>
+								  <li class="fontawesome-minus right">
+									<span id="m_wt3">10%</span>
+								  </li>
+								</ul> 
+
+							</section>
+						</article>
+						
+						<article class="6u 12u$(xsmall) work-item">
+							<section class="section">
+
+								<h1 id="h_wt4"></h1>
+
+								<div class="temperature">
+								  <h2 id="c_wt4"></h2>
+								</div>
+
+								<ul>
+								  <li class="fontawesome-plus left">
+									<span id="p_wt4">4 mph</span>
+								  </li>
+								  <li class="fontawesome-minus right">
+									<span id="m_wt4">10%</span>
+								  </li>
+								</ul>  
+
+							</section>
+						</article>
+						
+						<article class="6u 12u$(xsmall) work-item">
+							<section class="section">
+
+								<h1 id="h_wt5"></h1>
+
+								<div class="temperature">
+								  <h2 id="c_wt5"></h2>
+								</div>
+
+								<ul>
+								  <li class="fontawesome-plus left">
+									<span id="p_wt5">4 mph</span>
+								  </li>
+								  <li class="fontawesome-minus right">
+									<span id="m_wt5">10%</span>
+								  </li>
+								</ul> 
+
+							</section>
+						</article>
+					</div>
 				</section>
 
 
@@ -199,12 +285,44 @@
 			woeid: woeid,
 			unit: 'f',
 			success: function(weather) {
+			console.log(weather);
 			  html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.alt.temp+'&deg;C</h2>';
 			  //html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
 			  //html += '<li class="currently">'+weather.currently+'</li>';
 			  //html += '<li>'+weather.temp+'&deg;'+weather.units.temp+'</li></ul>';  
 			  
 			  $("#weather").html(html);
+			  
+			  html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.alt.temp+'&deg;C</h2>';
+			  html += '<li class="currently">'+weather.forecast[0].day+'</li>';
+			  
+			  $("#weather0").html(html);
+			  $("#h_wt2").html(weather.forecast[1].day + " - " + weather.forecast[1].date);
+			  $("#h_wt3").html(weather.forecast[2].day + " - " + weather.forecast[2].date);
+			  $("#h_wt4").html(weather.forecast[3].day + " - " + weather.forecast[3].date);
+			  $("#h_wt5").html(weather.forecast[4].day + " - " + weather.forecast[4].date);
+			  
+			  var tmp = Math.round((parseInt(weather.forecast[1].alt.high) + parseInt(weather.forecast[1].alt.low))/2);
+			  $("#c_wt2").html('<i class="icon-'+weather.forecast[1].code+'"></i> '+tmp+'&deg;C');
+			  
+			  tmp = Math.round((parseInt(weather.forecast[2].alt.high) + parseInt(weather.forecast[2].alt.low))/2);
+			  $("#c_wt3").html('<i class="icon-'+weather.forecast[2].code+'"></i> '+tmp+'&deg;C');
+			  
+			  tmp = Math.round((parseInt(weather.forecast[3].alt.high) + parseInt(weather.forecast[3].alt.low))/2);
+			  $("#c_wt4").html('<i class="icon-'+weather.forecast[3].code+'"></i> '+tmp+'&deg;C');
+			  
+			  tmp = Math.round((parseInt(weather.forecast[4].alt.high) + parseInt(weather.forecast[4].alt.low))/2);
+			  $("#c_wt5").html('<i class="icon-'+weather.forecast[4].code+'"></i> '+tmp+'&deg;C');
+			  
+			  $("#p_wt2").html(weather.forecast[1].alt.high+'&deg;C');
+			  $("#p_wt3").html(weather.forecast[2].alt.high+'&deg;C');
+			  $("#p_wt4").html(weather.forecast[3].alt.high+'&deg;C');
+			  $("#p_wt5").html(weather.forecast[4].alt.high+'&deg;C');
+			  
+			  $("#m_wt2").html(weather.forecast[1].alt.low+'&deg;C');
+			  $("#m_wt3").html(weather.forecast[2].alt.low+'&deg;C');
+			  $("#m_wt4").html(weather.forecast[3].alt.low+'&deg;C');
+			  $("#m_wt5").html(weather.forecast[4].alt.low+'&deg;C');
 			},
 			error: function(error) {
 			  $("#weather").html('<p>'+error+'</p>');
