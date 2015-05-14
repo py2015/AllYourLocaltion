@@ -14,9 +14,10 @@
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.poptrox.min.js"></script>
 		<script src="js/skel.min.js"></script>
-		<script src="js/init.js"></script>
+		<script src="js/init.js"></script>		
 		
 		<link rel="stylesheet" type="text/css" href="styles.css" />
+		<link rel="stylesheet" type="text/css" href="css/style-weather.css" />
 		
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
@@ -26,10 +27,12 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
 	<body id="top">
-
 		<!-- Header -->
 			<header id="header">
-				<a href="#" class="image avatar"><img src="images/avatar.jpg" alt="" /></a>
+				<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js"></script>
+				<script src="js/jquery.simpleWeather.js"></script>
+
+				<div id="weather"></div>
 				
 				
 				<h1 id="GeoResults"></h1>
@@ -74,12 +77,15 @@
 					</script>
 				</section>
 				
-				<!--<section id="two">
+				<section id="two">
 					<header class="major">
-						<h2>Weather</h2>
+						<h2></h2>
 					</header>
-					<div id="weather"></div>
-				</section>-->
+					<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js"></script>
+					<script src="js/jquery.simpleWeather.js"></script>
+
+					
+				</section>
 
 
 				
@@ -101,13 +107,13 @@
 		function showLocation(){
 			var body = "";
 			if(isIpLocation){
-				body = "I am in <strong>IP LOCATION</strong><br/><strong>" + ip + "</strong><br/>Address<br/><strong>" +  addr + "</strong><br/>";
+				body = "<div>I am in <strong>IP LOCATION</strong></div><div><strong>" + ip + "</strong></div><div>Address</div><div><strong>" +  addr + "</strong></div>";
 					//body += "<strong>" + regionName + ", " + country + "</strong><br/>";
-					body += "Latitude - Longtitude: <br/>" + "<strong>" + lat + " - " + lon + "</strong>";
+					body += "<div>Latitude - Longtitude: </div><div>" + "<strong>" + lat + " - " + lon + "</strong></div>";
 			}else{
-				body = "I am in <strong>REAL LOCATION</strong><br/><strong>" + ip + "</strong><br/>Address<br/><strong>" +  addr + "</strong><br/>";
+				body = "<div>I am in <strong>REAL LOCATION</strong></div><div><strong>" + ip + "</strong></div><div>Address</div><div><strong>" +  addr + "</strong></div>";
 					//body += "<strong>" + regionName + ", " + country + "</strong><br/>";
-					body += "Latitude - Longtitude: <br/>" + "<strong>" + lat + " - " + lon + "</strong>";
+					body += "<div>Latitude - Longtitude: </div><div>" + "<strong>" + lat + " - " + lon + "</strong></div>";
 			}
 			$("#GeoResults").html(body);
 		}
@@ -124,6 +130,7 @@
 				getAddress();
 				showLocation();
 				drawMap();
+				loadWeather();
 				
 				$("#btnIpLocation").removeClass("deactive");
 				$("#btnIpLocation").addClass("active");
@@ -136,12 +143,6 @@
 		
 		function success(position) {
 		  
-		  //var body = "I am in <strong>IP LOCATION</strong><br/><strong>" + data["query"] + "</strong><br/>";
-		//		body += "<strong>" + data["regionName"] + ", " + data["country"] + "</strong><br/>";
-			//	body += "Latitude - Longtitude: <br/>" + "<strong>" + position.coords.latitude + " - " + position.coords.longitude + "</strong>";
-		  
-		  //$("#GeoResults").html(body);
-		  
 			lat = position.coords.latitude;
 			lon = position.coords.longitude;
 			isIpLocation = false;
@@ -149,6 +150,7 @@
 			getAddress();
 			showLocation();
 			drawMap();
+			loadWeather();
 			
 			$("#btnIpLocation").addClass("deactive");
 			$("#btnIpLocation").removeClass("active");
@@ -188,5 +190,26 @@
 		});
 		
 		getIpLocation();
+		
+		function loadWeather() {
+			var location = lat+','+lon;
+			var woeid = "";
+		  $.simpleWeather({
+			location: location,
+			woeid: woeid,
+			unit: 'f',
+			success: function(weather) {
+			  html = '<h2><i class="icon-'+weather.code+'"></i> '+weather.alt.temp+'&deg;C</h2>';
+			  //html += '<ul><li>'+weather.city+', '+weather.region+'</li>';
+			  //html += '<li class="currently">'+weather.currently+'</li>';
+			  //html += '<li>'+weather.temp+'&deg;'+weather.units.temp+'</li></ul>';  
+			  
+			  $("#weather").html(html);
+			},
+			error: function(error) {
+			  $("#weather").html('<p>'+error+'</p>');
+			}
+		  });
+		}
 	</script>
 </html>

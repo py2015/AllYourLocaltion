@@ -1246,9 +1246,11 @@
 	}
 	
 	.deactive{
-		background-color:gray; color:white;
+		color:gray;
+		border-color:gray;
 	}
 	
 	.active{
-		background-color:red; color:white;
+		color:white;
+		border-color:white;
 	}
