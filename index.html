@@ -21,6 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="styles.css" />
 		<link rel="stylesheet" type="text/css" href="css/style-weather.css" />
 		<link rel="stylesheet" type="text/css" href="css/style-slider.css" />
+		<link rel="stylesheet" type="text/css" href="css/style-large-image.css" />
 		<link rel="stylesheet" href="css/style-weather-widget.css" />
 		
 		<noscript>
@@ -129,6 +130,8 @@
 				$(window).bind("orientationchange", ScaleSlider);
 
 				//responsive code end
+				
+				window.location.href = "#goofy";
 			});
 		</script>
 	
@@ -328,6 +331,13 @@
 			</div>
 
 		<!-- Footer -->
+		<!-- <a class="lightbox" href="#goofy">
+		   <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/158388/goofy.jpg"/>
+		</a> -->
+		<div class="lightbox-target" id="goofy">
+				   <a href="http://click.accesstrade.vn/adv.php?rk=00001l00002r" target="_blank"><img src="http://imp.accesstrade.vn/img.php?rk=00001l00002r" border="0"/></a>
+				   <a class="lightbox-close" href="#"></a>
+		</div>
 	</body>
 	<script>
 		var ip = "";
