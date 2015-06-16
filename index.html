@@ -92,7 +92,7 @@
 				$(window).bind("orientationchange", ScaleSlider);
 
 				//responsive code end
-				
+				$(".loading").hide();
 				window.location.href = "#goofy";
 			});
 		</script>
@@ -242,6 +242,24 @@
 					</div>
 				</section>
 				
+				<section id="three">
+					<header class="major">
+						<h2>Giá Ngoại Tệ</h2>
+					</header>
+					<div class="row">
+						<iframe frameborder="0" marginwidth="0" marginheight="0" src="http://www.reviewcompany.vn/free-service/exchange/" width="99%" height="350" scrolling="yes"></iframe> 
+					</div>
+				</section>
+				
+				<section id="four">
+					<header class="major">
+						<h2>Giá Vàng</h2>
+					</header>
+					<div class="row">
+						<iframe frameborder="0" marginwidth="0" marginheight="0" src="http://www.reviewcompany.vn/free-service/gold/" width="99%" height="350" scrolling="yes"></iframe> 
+					</div>
+				</section>
+				
 				<div id="slider1_container" style="position: fixed; top: 0px; margin: 0 auto; width: 809px; height: 150px; overflow: hidden;">
 
 				<!-- Loading Screen -->
@@ -286,6 +304,7 @@
 				   <a href="http://click.accesstrade.vn/adv.php?rk=00001l00002r" target="_blank"><img src="http://imp.accesstrade.vn/img.php?rk=00001l00002r" border="0"/></a>
 				   <a class="lightbox-close" href="#"></a>
 		</div>
+		<div class="loading">Loading&#8230;</div>
 	</body>
 	<script>
 		var ip = "";
@@ -311,6 +330,7 @@
 		}
 	
 		function getIpLocation(){
+			$(".loading").show();
 			$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
 				ip = data["query"];
 				regionName = data["regionName"];
@@ -329,6 +349,7 @@
 				
 				$("#btnRealLocation").addClass("deactive");
 				$("#btnRealLocation").removeClass("active");
+				$(".loading").hide();
 			});
 			
 		}
@@ -349,18 +370,24 @@
 			
 			$("#btnRealLocation").removeClass("deactive");
 			$("#btnRealLocation").addClass("active");
+			$(".loading").hide();
 		}
 
 		function error(msg) {
 		   alert(msg);
+		   $(".loading").hide();
 		}
 		
 		function getRealLocation(){
+			$(".loading").show();
+			
 			if (navigator.geolocation) {
 			  navigator.geolocation.getCurrentPosition(success, error);
 			} else {
 			  error('not supported');
 			}
+			
+			
 		}
 		
 		function getAddress(){
@@ -435,7 +462,6 @@
 			}
 		  });
 		}
-		
 		//var center = jQuery('#geocomplete').offset().left + jQuery('#geocomplete').width()/2 - 67;
 		//$("#slider2_container").css("left",center);
 	</script>
